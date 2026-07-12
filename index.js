@@ -136,7 +136,9 @@ next();
       const plan = await planCollection.findOne(query);
       res.send(plan);
     });
-
+app.get("/api/test", (req, res) => {
+  res.send("API Working");
+});
     app.get("/api/users", async (req, res) => {
       const cursor = userCollection.find();
       const result = await cursor.toArray();
