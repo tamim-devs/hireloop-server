@@ -24,10 +24,10 @@ const client = new MongoClient(uri, {
   },
 });
 
-// async function run() {
-//    console.log("Run function started");
-//   try {
-//     await client.connect();
+async function run() {
+   console.log("Run function started");
+  try {
+    await client.connect();
 
     const database = client.db(process.env.AUTH_DB_NAME);
     const jobCollection = database.collection("jobs");
@@ -308,14 +308,14 @@ const skipItems = (page - 1) * perPage;
     });
 
     await client.db(process.env.AUTH_DB_NAME).command({ ping: 1 });
-  //   console.log(
-  //     "Pinged your deployment. You successfully connected to MongoDB!",
-  //   );
-  // } finally {
-  //   // await client.close();
-  // } 
-// }
-// run().catch(console.dir);
+    // console.log(
+    //   "Pinged your deployment. You successfully connected to MongoDB!",
+    // );
+  } finally {
+    // await client.close();
+  } 
+}
+run().catch(console.dir);
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
