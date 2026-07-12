@@ -12,6 +12,10 @@ app.get("/", (req, res) => {
 });
 console.log("Before run");
 // mongodb connection
+    const logger = (req, res, next) => {
+      console.log(`logger middleware loged`, req.params);
+      next();
+    };
 
 const uri = process.env.MONGO_DB_URI;
 
@@ -25,9 +29,9 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
-   console.log("Run function started");
+  //  console.log("Run function started");
   try {
-    await client.connect();
+    // await client.connect();
 
     const database = client.db(process.env.AUTH_DB_NAME);
     const jobCollection = database.collection("jobs");
@@ -38,10 +42,6 @@ async function run() {
     const subscriptionCollection = database.collection("subscription");
     const sessionCollection = database.collection("session");
 
-    const logger = (req, res, next) => {
-      console.log(`logger middleware loged`, req.params);
-      next();
-    };
 
     const verifytoken = async (req, res, next) => {
       console.log(req.headers.authorization);
@@ -307,10 +307,10 @@ const skipItems = (page - 1) * perPage;
       res.json(result || {});
     });
 
-    await client.db(process.env.AUTH_DB_NAME).command({ ping: 1 });
-    // console.log(
-    //   "Pinged your deployment. You successfully connected to MongoDB!",
-    // );
+    // await client.db(process.env.AUTH_DB_NAME).command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!",
+    );
   } finally {
     // await client.close();
   } 
