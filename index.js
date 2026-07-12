@@ -10,7 +10,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-console.log("🚀 SERVER STARTED");
+console.log("Before run");
 // mongodb connection
 
 const uri = process.env.MONGO_DB_URI;
@@ -25,6 +25,7 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
+   console.log("Run function started");
   try {
     await client.connect();
 
@@ -129,6 +130,7 @@ next();
 
     // plans
     app.get("/api/plans", async (req, res) => {
+      console.log("Registering /api/plans route");
       const query = {};
       if (req.query.plan_id) {
         query.plan_id = req.query.plan_id;
@@ -136,8 +138,9 @@ next();
       const plan = await planCollection.findOne(query);
       res.send(plan);
     });
-app.get("/api/test", (req, res) => {
-  res.send("API Working");
+
+    app.get("/api/test", (req, res) => {
+  res.send("Test Route Working");
 });
     app.get("/api/users", async (req, res) => {
       const cursor = userCollection.find();
@@ -313,8 +316,11 @@ const skipItems = (page - 1) * perPage;
   } 
 }
 run().catch(console.dir);
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+
 
 module.exports = app
